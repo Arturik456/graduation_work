@@ -1,36 +1,30 @@
 function tabsDec()  {
-	let tabTo = document.getElementsByClassName('decoration'),
-		noClick = document.getElementsByClassName('no_click'),
-		tabContentTo = document.querySelectorAll('.tabs_content_to');
+let noClick = document.querySelectorAll('.no_click'),
+    decor = document.querySelector('.decoration'),
+    decorItem = document.getElementsByClassName('decoration_item'),
+    decorA = document.querySelectorAll('.no_click > a'),
+    decorContent = document.querySelectorAll('.tabs_content_to');
 
+  function showTabClass(a) {
+    for (let t = 0; t < noClick.length; t++) {
+      noClick[t].classList.remove('after_click');   
+      decorContent[t].style.display = 'none';
+    }
+    noClick[a].classList.add('after_click');
+    decorContent[a].style.display = 'block';
+  }
 
-		function hideTabDecoration (a) {
-			for (let t = 0; t < tabContentTo.length; t++) {
-				tabContentTo[t].classList.remove('show');
-				tabContentTo[t].classList.add('hide');
-				noClick[t].classList.remove('after_click');
-				tabContentTo[t].style.display = 'none';
-			}
-		}
-
-		hideTabDecoration(1)
-
-		function showTabContent(c) {
-			if (tabContentTo[c].classList.contains('hide')) {
-				hideTabDecoration(0);
-				tabContentTo[c].classList.remove('hide');
-				tabContentTo[c].classList.add('show');
-				noClick[c].classList.add('after_click');
-				tabContentTo[c].style.display = 'none'
-				}
-			}
-		
-		for (let j = 0; j < tabTo.length; j++) {
-			tabTo[j].addEventListener('click', ()=> {
-				showTabContent(j);
-			})
-		}
-
-
-}
+  decor.addEventListener('click', (event) => {
+    let target = event.target;
+    if (target.parentElement.classList.contains('no_click')) {
+      // console.log('содержит но клик');
+      for (let i = 0; i < decorA.length; i++) {
+        if (target == decorA[i]) {
+          showTabClass(i);
+          break;
+        }        
+      }      
+    }
+  });
+ }
 module.exports = tabsDec;
