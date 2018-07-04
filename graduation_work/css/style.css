@@ -23,6 +23,44 @@ textarea:focus {
 .no-padding {
   padding: 0 !important;
 }
+  /*Timer*/
+.timer {
+    padding: 10px;
+    background-color: #ffffff;
+    text-align: center;
+    border-radius: 10px;
+}
+.eTimer {
+    padding: 10px;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    font-size: 4.8rem;
+    color: #fff;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+}
+.timer-block {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    line-height: 0.8;
+}
+.timer-number {
+    background-color: rgb(60, 60, 60);
+    border-radius: 15px;
+    letter-spacing: 5px;
+    padding-left: 5px;
+}
+.timer-label {
+    color: #000;
+    font-size: 14px;
+}
+
+
 .form {
   /*margin-top: 2rem;*/
   padding: 2rem 5rem;
@@ -1453,6 +1491,8 @@ textarea:focus {
   .popup_calc_profile_button {
     padding: 1rem 5rem;
   }
+
+
 }
 /* small devices, tablets */
 @media only screen and (max-width: 768px) {
