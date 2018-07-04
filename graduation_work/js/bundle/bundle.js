@@ -7,6 +7,8 @@ window.addEventListener('DOMContentLoaded', function() {
 	let tabs = require('../parts/tabs.js');
 	let tabsDec = require('../parts/tabsDec.js');
 	let ajax = require('../parts/ajax.js');
+	let img = require('../parts/img.js');
+	let time = require('../parts/time.js');
 	// let slider = require('../parts/slider.js');
 
 	modalEng();
@@ -15,11 +17,13 @@ window.addEventListener('DOMContentLoaded', function() {
 	ajax();
 	tabs();
 	tabsDec();
+	img();
+	time('2018-07-7');
 	// slider();
 
 
 });
-},{"../parts/ajax.js":2,"../parts/calc.js":3,"../parts/modalEng.js":4,"../parts/modalPhone.js":5,"../parts/tabs.js":6,"../parts/tabsDec.js":7}],2:[function(require,module,exports){
+},{"../parts/ajax.js":2,"../parts/calc.js":3,"../parts/img.js":4,"../parts/modalEng.js":5,"../parts/modalPhone.js":6,"../parts/tabs.js":7,"../parts/tabsDec.js":8,"../parts/time.js":9}],2:[function(require,module,exports){
 function ajax() {
 	
 let message = new Object();
@@ -266,6 +270,56 @@ function calc() {
 
 module.exports = calc;
 },{}],4:[function(require,module,exports){
+function img() {
+let blockWorks = document.getElementsByClassName('works')[0],
+	photoImg = document.getElementsByClassName('works-img'),
+	linkImg = document.querySelectorAll('div.works-img > a'),
+	littleImg = document.getElementsByClassName('lupa'),
+	zoomImgDiv = document.createElement('div'),
+	zoomImg = document.createElement('img');
+
+	blockWorks.appendChild(zoomImgDiv);
+
+	for(let i = 0; i < linkImg.length; i++) {
+		linkImg[i].addEventListener('click', function(event) {
+			event.preventDefault();
+
+			zoomImgDiv.appendChild(zoomImg);
+			zoomImgDiv.classList.add('zoom-div');
+
+		let linkA = linkImg[i].getAttribute('href');
+
+			zoomImg.setAttribute('src', linkA);
+			zoomImg.classList.add('zoom-img');
+			zoomImgDiv.classList.remove('hide');
+			zoomImgDiv.classList.add('show');
+
+			zoomImgDiv.classList.add('animated');
+			zoomImgDiv.classList.remove('fadeOut');
+			zoomImgDiv.classList.add('fadeIn');
+
+			document.body.classList.remove('overflow_auto');
+			document.body.classList.add('overflow_hidden');
+		});
+	};
+
+	zoomImgDiv.addEventListener('click', function(event) {
+		let target = event.target;
+			if (target == this) {
+				zoomImgDiv.classList.remove('fadeIn');
+				zoomImgDiv.classList.add('fadeOut');
+			setTimeout( ()=> {
+				zoomImgDiv.classList.remove('show');
+				zoomImgDiv.classList.add('hide');
+				document.body.classList.remove('overflow_hidden');
+				document.body.classList.add('overflow_auto');
+			}, 700);
+		}
+	})
+
+}
+module.exports = img;
+},{}],5:[function(require,module,exports){
 function modalEng () {
 
 	let btnEng = document.querySelector('.header_btn'),
@@ -294,7 +348,7 @@ function modalEng () {
 
 module.exports = modalEng;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 function modalPhone() {
 	let phone = document.getElementsByClassName('phone_link')[0],
 		phoneFutter = document.getElementsByClassName('phone_link')[1],
@@ -331,7 +385,7 @@ function modalPhone() {
 
 };
 module.exports = modalPhone;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 function tabs() {
 	let tab = document.getElementsByClassName('glazing_block'),
 		glazing = document.getElementsByClassName('glazing')[0],
@@ -368,41 +422,90 @@ module.exports = tabs;
 
 
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 function tabsDec()  {
-	let tabTo = document.getElementsByClassName('decoration'),
-		noClick = document.getElementsByClassName('no_click'),
-		tabContentTo = document.querySelectorAll('.tabs_content_to');
+let noClick = document.querySelectorAll('.no_click'),
+	decor = document.querySelector('.decoration'),
+	decorItem = document.getElementsByClassName('decoration_item'),
+	decorA = document.querySelectorAll('.no_click>a'),
+	decorContent = document.querySelectorAll('.tabs-finishing-content');
 
+  function showTabClass(a) {
+	for (let t = 0; t < noClick.length; t++) {
+	  noClick[t].classList.remove('after_click');   
+	  decorContent[t].style.display = 'none';
+	}
+	noClick[a].classList.add('after_click');
+	decorContent[a].style.display = 'block';
+  }
 
-		function hideTabDecoration (a) {
-			for (let t = 0; t < tabContentTo.length; t++) {
-				tabContentTo[t].classList.remove('show');
-				tabContentTo[t].classList.add('hide');
-				noClick[t].classList.remove('after_click');
-				tabContentTo[t].style.display = 'none';
-			}
-		}
-
-		hideTabDecoration(1)
-
-		function showTabContent(c) {
-			if (tabContentTo[c].classList.contains('hide')) {
-				hideTabDecoration(0);
-				tabContentTo[c].classList.remove('hide');
-				tabContentTo[c].classList.add('show');
-				noClick[c].classList.add('after_click');
-				tabContentTo[c].style.display = 'none'
-				}
-			}
-		
-		for (let j = 0; j < tabTo.length; j++) {
-			tabTo[j].addEventListener('click', ()=> {
-				showTabContent(j);
-			})
-		}
-
-
-}
+  decor.addEventListener('click', (event) => {
+	let target = event.target;
+	if (target.parentElement.classList.contains('no_click')) {
+	  // console.log('содержит но клик');
+	  for (let i = 0; i < decorA.length; i++) {
+		if (target == decorA[i]) {
+		  showTabClass(i);
+		  break;
+		}        
+	  }      
+	}
+  });
+ }
 module.exports = tabsDec;
+},{}],9:[function(require,module,exports){
+function timer(deadLine) {
+
+	let eTimer = document.getElementsByClassName('eTimer')[0];
+
+	function getTime(endtime) {
+		let t = Date.parse(endtime) - Date.parse(new Date()),
+		seconds = Math.floor((t / 1000) % 60),
+		minutes = Math.floor((t / (1000 * 60) % 60)),
+		hours = Math.floor(t / (1000 * 60 * 60) % 24),
+		days = Math.floor(t / (1000 * 60 * 60 * 24));
+
+		return {
+			'total': t,
+			'days': days,
+			'hours': hours,
+			'minutes': minutes,
+			'seconds': seconds
+		};
+	}; 
+
+	function setClock(id, endtime) {
+		let timer = document.getElementById(id),
+		days = document.querySelector('.days'),
+		hours = document.querySelector('.hours'),
+		minutes = document.querySelector('.minutes'),
+		seconds = document.querySelector('.seconds');
+
+		function updateClock() {
+			let t = getTime(endtime);
+			let arrTime = [t.days, t.hours, t.minutes, t.seconds];
+			for (let i = 0; i < arrTime.length; i++) {
+				if (arrTime[i] < 10) {
+					arrTime[i] = '0' + arrTime[i];
+				};
+			};
+			days.innerHTML = arrTime[0];
+			hours.innerHTML = arrTime[1];
+			minutes.innerHTML = arrTime[2];
+			seconds.innerHTML = arrTime[3];
+			if (t.total <= 0) {
+				clearInterval(timeInterval);
+				days.innerHTML = '00';
+				hours.innerHTML = '00';
+				minutes.innerHTML = '00';
+				seconds.innerHTML = '00';
+			};
+		};
+		let timeInterval = setInterval(updateClock, 1000);
+	};
+
+	setClock(eTimer, deadLine);
+}
+
+module.exports = timer;
 },{}]},{},[1]);

@@ -6,6 +6,8 @@ window.addEventListener('DOMContentLoaded', function() {
 	let tabs = require('../parts/tabs.js');
 	let tabsDec = require('../parts/tabsDec.js');
 	let ajax = require('../parts/ajax.js');
+	let img = require('../parts/img.js');
+	let time = require('../parts/time.js');
 	// let slider = require('../parts/slider.js');
 
 	modalEng();
@@ -14,6 +16,8 @@ window.addEventListener('DOMContentLoaded', function() {
 	ajax();
 	tabs();
 	tabsDec();
+	img();
+	time('2018-07-7');
 	// slider();
 
 
