@@ -545,6 +545,26 @@ textarea:focus {
 .works {
   padding: 5rem 0;
 }
+.works .div_picture {
+  position: fixed;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  -ms-align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(47, 46, 42, 0.7);
+  z-index: 9999;
+}
 .works img {
   margin-bottom: 3rem;
 }
