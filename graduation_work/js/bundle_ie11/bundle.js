@@ -622,7 +622,7 @@
   }, {}], 8: [function (require, module, exports) {
     function timer() {
 
-      var deadline = '2018-07-7';
+      var deadline = '2018-07-07';
 
       function getTimeRemaining(endtime) {
         var t = Date.parse(endtime) - Date.parse(new Date()),
@@ -675,19 +675,26 @@
 
         function updateClock() {
           var t = getTimeRemaining(endtime);
-          // console.log('проверка' + t);
-          // hours.innerHTML = '0' + t.hours,
-          days.innerHTML = countNumber(t.days), hours.innerHTML = countNumber(t.hours), minutes.innerHTML = countNumber(t.minutes), seconds.innerHTML = countNumber(t.seconds);
-
+          var arrTime = [t.days, t.hours, t.minutes, t.seconds];
+          for (var i = 0; i < arrTime.length; i++) {
+            if (arrTime[i] < 10) {
+              arrTime[i] = '0' + arrTime[i];
+            };
+          };
+          days.innerHTML = arrTime[0];
+          hours.innerHTML = arrTime[1];
+          minutes.innerHTML = arrTime[2];
+          seconds.innerHTML = arrTime[3];
           if (t.total <= 0) {
             clearInterval(timeInterval);
-          }
+            days.innerHTML = '00';
+            hours.innerHTML = '00';
+            minutes.innerHTML = '00';
+            seconds.innerHTML = '00';
+          };
         };
 
         var timeInterval = setInterval(updateClock, 1000);
-
-        updateClock();
-        // console.log('проверка тут');
       };
 
       setClock('eTimer', deadline);
