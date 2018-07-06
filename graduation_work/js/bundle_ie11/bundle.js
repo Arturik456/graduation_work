@@ -17,28 +17,23 @@
 })()({ 1: [function (require, module, exports) {
     window.addEventListener('DOMContentLoaded', function () {
 
-      var modalEng = require('../parts/modalEng.js');
-      var modalPhone = require('../parts/modalPhone.js');
+      var modal = require('../parts/modal.js');
       var calc = require('../parts/calc.js');
       var tabs = require('../parts/tabs.js');
       var tabsDec = require('../parts/tabsDec.js');
       var ajax = require('../parts/ajax.js');
       var img = require('../parts/img.js');
       var time = require('../parts/time.js');
-      // let slider = require('../parts/slider.js');
 
-      modalEng();
-      modalPhone();
+      modal();
       calc();
       ajax();
       tabs();
       tabsDec();
       img();
       time('2018-07-7');
-      // slider();
-
     });
-  }, { "../parts/ajax.js": 2, "../parts/calc.js": 3, "../parts/img.js": 4, "../parts/modalEng.js": 5, "../parts/modalPhone.js": 6, "../parts/tabs.js": 7, "../parts/tabsDec.js": 8, "../parts/time.js": 9 }], 2: [function (require, module, exports) {
+  }, { "../parts/ajax.js": 2, "../parts/calc.js": 3, "../parts/img.js": 4, "../parts/modal.js": 5, "../parts/tabs.js": 6, "../parts/tabsDec.js": 7, "../parts/time.js": 8 }], 2: [function (require, module, exports) {
     function ajax() {
 
       var message = new Object();
@@ -97,204 +92,113 @@
   }, {}], 3: [function (require, module, exports) {
     function calc() {
 
-      var buttonCalc = document.getElementsByClassName('glazing_price_btn'),
-          popupCalc = document.getElementsByClassName('popup_calc')[0],
-          popupCalcProfile = document.getElementsByClassName('popup_calc_profile')[0],
-          popupCalcProfileClose = document.getElementsByClassName('popup_calc_profile_close')[0],
-          popupCalcClose = document.getElementsByClassName('popup_calc_close')[0],
-          popupCalcButton = document.getElementsByClassName('popup_calc_button')[0],
+      var popupCalcCont = document.querySelector('.popup_calc_content'),
+          balconIcons = popupCalcCont.querySelector('.balcon_icons'),
+          imgMini = balconIcons.getElementsByTagName('img'),
+          bigImg = popupCalcCont.querySelector('.big_img'),
+          imgBig = bigImg.getElementsByTagName('img'),
           inputWidth = document.getElementById('width'),
-          inputHeight = document.getElementById('height');
-
-      //объект
-      var data = {};
-
-      function checkInput(inp) {
-        inp.addEventListener('keypress', function (inp) {
-          var that = this;
-          setTimeout(function () {
-            var res = /[^0-999]/g.exec(that.value);
-            that.value = that.value.replace(res, '');
-          }, 0);
-        });
-      };
-
-      checkInput(inputWidth);
-      checkInput(inputHeight);
-
-      for (var i = 0; i < buttonCalc.length; i++) {
-        buttonCalc[i].addEventListener('click', function () {
-          popupCalc.classList.add('show');
-          popupCalc.classList.add('animated');
-          popupCalc.classList.remove('fadeOut');
-          popupCalc.classList.add('fadeIn');
-        });
-      };
-      popupCalcClose.addEventListener('click', popupClose);
-
-      function popupClose() {
-        popupCalc.classList.remove('fadeIn');
-        popupCalc.classList.add('fadeOut');
-        inputWidth.value = '';
-        inputHeight.value = '';
-        data = {};
-        setTimeout(function () {
-          popupCalc.classList.remove('show');
-          popupCalc.classList.add('hide');
-        }, 750);
-      }
-      // табы
-      function tabsCalc(event) {
-        var type = document.querySelectorAll('div.balcon_icons>a'),
-            typeImg = document.querySelectorAll('div.balcon_icons>a>img'),
-            typeContent = document.querySelectorAll('div.big_img>img');
-
-        function hideTabContent(a) {
-          for (var _i2 = a; _i2 < typeContent.length; _i2++) {
-            typeContent[_i2].classList.remove('show');
-            typeContent[_i2].classList.add('hide');
-            typeContent[_i2].classList.add('animated');
-            typeContent[_i2].classList.add('fadeIn');
-            typeImg[_i2].classList.remove('scale');
-          };
-        };
-        hideTabContent(1);
-
-        function showTabContent(b) {
-          if (typeContent[b].classList.contains('hide')) {
-            hideTabContent(0);
-            typeImg[b].classList.add('scale');
-            typeContent[b].classList.remove('hide');
-            typeContent[b].classList.add('show');
-          };
-        };
-
-        var _loop2 = function _loop2(_i3) {
-          type[_i3].addEventListener('click', function (event) {
-            event.preventDefault();
-            typeContent[_i3].setAttribute('value', _i3 + 1);
-            data.type = typeContent[_i3].getAttribute('value');
-            showTabContent(_i3);
-          });
-        };
-
-        for (var _i3 = 0; _i3 < type.length; _i3++) {
-          _loop2(_i3);
-        };
-      }
-      tabsCalc();
-
-      setInterval(function () {
-        if (inputWidth.value == '' || inputHeight.value == '') {
-          popupCalcButton.setAttribute('disabled', 'true');
-        } else {
-          popupCalcButton.removeAttribute('disabled', 'true');
-        }
-      }, 0);
-
-      //кнопка Далее
-      popupCalcButton.addEventListener('click', function () {
-        data.width = inputWidth.value;
-        data.height = inputHeight.value;
-        popupCalcProfile.classList.remove('fadeOut');
-        popupCalc.classList.remove('show');
-        popupCalc.classList.add('hide');
-        popupCalcProfile.classList.add('show');
-        popupCalcProfile.classList.add('animated');
-      });
-
-      //profile
-      popupCalcProfileClose.addEventListener('click', popupProfileClose);
-
-      function popupProfileClose() {
-        popupCalcProfile.classList.remove('fadeIn');
-        popupCalcProfile.classList.add('fadeOut');
-        inputWidth.value = '';
-        inputHeight.value = '';
-        for (var _i4 = 0; _i4 < checkbox.length; _i4++) {
-          checkbox[_i4].checked = false;
-        };
-        data = {};
-        setTimeout(function () {
-          popupCalcProfile.classList.remove('show');
-          popupCalcProfile.classList.add('hide');
-        }, 700);
-      }
-
-      var select = document.getElementById('view_type'),
-          buttonProfile = document.getElementsByClassName('popup_calc_profile_button')[0],
-          checkboxCustom = document.getElementsByClassName('checkbox-custom'),
+          inputHeight = document.getElementById('height'),
+          select = document.getElementById('view_type'),
           checkbox = document.getElementsByClassName('checkbox'),
-          checkboxCold = document.getElementById('cold'),
-          checkboxWarm = document.getElementById('warm'),
-          popupCalcEnd = document.getElementsByClassName('popup_calc_end')[0];
+          popCalcEnd = document.querySelector('.popup_calc_end'),
+          popupFormCalcEnd = popCalcEnd.querySelector('.popup_form');
 
-      function check() {
-        setInterval(function () {
-          if (checkbox[0].checked === false && checkbox[1].checked === false) {
-            buttonProfile.setAttribute('disabled', 'true');
-          } else {
-            buttonProfile.removeAttribute('disabled', 'true');
-          }
-          checkbox[0].addEventListener('click', function () {
-            checkbox[1].checked = false;
-            buttonProfile.removeAttribute('disabled', 'true');
-          });
-          checkbox[1].addEventListener('click', function () {
-            checkbox[0].checked = false;
-            buttonProfile.removeAttribute('disabled', 'true');
-          });
-        }, 0);
-      };
-      check();
-
-      buttonProfile.addEventListener('click', function () {
-        data.category = select.options[select.selectedIndex].value;
-        for (var _i5 = 0; _i5 < checkbox.length; _i5++) {
-          if (checkbox[_i5].checked) {
-            data.checkbox = checkboxCustom[_i5].className.slice(16);
-          };
-        };
-        popupCalcProfile.classList.remove('show');
-        popupCalcProfile.classList.add('hide');
-        popupCalcEnd.classList.add('show');
-      });
-
-      //popupEnd
-      var popupCalcEndClose = document.getElementsByClassName('popup_calc_end_close')[0],
-          form = document.getElementsByClassName('form'),
-          inputName = document.querySelector('input.name'),
-          inputPhone = document.querySelector('input.phone'),
-          buttonCalcEnd = document.getElementsByClassName('btn-block')[8];
-
-      popupCalcEndClose.addEventListener('click', function () {
-        popupCalcEnd.classList.add('animated');
-        popupCalcEnd.classList.add('fadeOut');
-        inputWidth.value = '';
-        inputHeight.value = '';
-        for (var _i6 = 0; _i6 < checkbox.length; _i6++) {
-          checkbox[_i6].checked = false;
-        };
-        data = {};
-        setTimeout(function () {
-          popupCalcEnd.classList.remove('show');
-          popupCalcEnd.classList.add('hide');
-          popupCalcEnd.classList.remove('fadeOut');
-        }, 700);
-      });
-
-      buttonCalcEnd.addEventListener('click', function () {
-        data.userName = inputName.value;
-        data.userPhone = inputPhone.value;
-
-        //ajax
+      popupFormCalcEnd.addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
         var request = new XMLHttpRequest();
         request.open('POST', 'server.php');
         request.setRequestHeader('Content-Type', 'aplication/x-www-form-urlencoded');
 
         var formData = new FormData(data);
 
+        console.log(formData);
+
         request.send(formData);
+
+        data.type = '';
+        data.width = 0;
+        data.height = 0;
+        data.cold = false;
+        data.warm = false;
+        inputWidth.value = '';
+        inputHeight.value = '';
+        checkbox[0].checked = false;
+        checkbox[1].checked = false;
+      });
+
+      select.addEventListener('change', function () {
+        data.type = select.value;
+        console.log(data);
+      });
+
+      inputWidth.addEventListener('keyup', function () {
+        inputWidth.value = inputWidth.value.replace(/[^\d]/g, '');
+        data.width = inputWidth.value;
+        console.log(data);
+      });
+      inputHeight.addEventListener('keyup', function () {
+        inputHeight.value = inputHeight.value.replace(/[^\d]/g, '');
+        data.height = inputHeight.value;
+        console.log(data);
+      });
+
+      function check(a, b) {
+
+        if (checkbox[a].checked) {
+          checkbox[b].checked = false;
+        };
+
+        for (var i = 0; i < checkbox.length; i++) {
+          if (checkbox[0].checked) {
+            data.cold = true;
+          } else {
+            data.cold = false;
+          };
+          if (checkbox[1].checked) {
+            data.warm = true;
+          } else {
+            data.warm = false;
+          };
+        }
+        console.log(data);
+      };
+
+      checkbox[0].addEventListener('click', function () {
+        check(0, 1);
+      });
+      checkbox[1].addEventListener('click', function () {
+        check(1, 0);
+      });
+
+      var data = {
+        type: String,
+        width: 0,
+        height: 0,
+        cold: false,
+        warm: false
+      };
+
+      popupCalcCont.addEventListener('click', function (e) {
+        e.preventDefault();
+        var target = e.target;
+
+        for (var i = 0; i < imgMini.length; i++) {
+          if (target == imgMini[i]) {
+            console.log('равно ' + imgMini[i].src);
+            for (var t = 0; t < imgMini.length; t++) {
+              imgMini[t].style.width = '60px';
+            }
+            imgMini[i].style.width = '150px';
+            for (var _t = 0; _t < imgBig.length; _t++) {
+              imgBig[_t].style.display = 'none';
+            }
+            imgBig[i].style.display = 'inline-block';
+
+            break;
+          }
+        }
       });
     };
 
@@ -310,21 +214,21 @@
       divImage.classList.add('div_picture');
       imgPic.classList.add('div_picture_img');
 
-      var _loop3 = function _loop3(i) {
+      var _loop2 = function _loop2(i) {
         zoom[i].addEventListener('click', function (event) {
           event.preventDefault();
           divImage.style.display = 'flex';
           works.appendChild(divImage);
           divImage.appendChild(imgPic);
-          for (var _i7 = 0; _i7 < zoomIn.length; _i7++) {
-            zoomIn[_i7].getAttribute('href');
+          for (var _i2 = 0; _i2 < zoomIn.length; _i2++) {
+            zoomIn[_i2].getAttribute('href');
           }
           imgPic.setAttribute('src', zoomIn[i].href);
         });
       };
 
       for (var i = 0; i < zoom.length; i++) {
-        _loop3(i);
+        _loop2(i);
       }
 
       divImage.addEventListener('click', function (event) {
@@ -337,55 +241,107 @@
 
     module.exports = img;
   }, {}], 5: [function (require, module, exports) {
-    function modalEng() {
-
-      var btnEng = document.querySelector('.header_btn'),
-          window = document.querySelector('.popup_engineer'),
-          contentEng = document.getElementsByClassName('popup_content')[1];
-
-      btnEng.addEventListener('click', function () {
-        window.style.display = 'block';
-      });
-
-      window.addEventListener('click', function (event) {
-        if (event.target == contentEng || event.target == document.getElementsByClassName('popup_dialog')[1] || event.target == document.getElementsByClassName('popup_form')[1] || event.target == document.getElementsByClassName('form')[1] || event.target == document.getElementsByClassName('form-control')[14] || event.target == document.getElementsByClassName('form-control')[15]) {
-          window.style.display = 'block';
-        } else {
-          window.style.display = "none";
-        }
-      });
-    };
-
-    module.exports = modalEng;
-  }, {}], 6: [function (require, module, exports) {
-    function modalPhone() {
-      var phone = document.getElementsByClassName('phone_link')[0],
-          phoneFutter = document.getElementsByClassName('phone_link')[1],
+    function modale() {
+      var btnPopEng = document.getElementsByClassName('popup_engineer_btn')[0],
+          popEng = document.querySelector('.popup_engineer'),
+          popCalc = document.querySelector('.popup_calc'),
+          btnPopCalc = popCalc.querySelector('.popup_calc_button'),
+          popCalcProfile = document.querySelector('.popup_calc_profile'),
+          btnPopCalcProfile = popCalcProfile.querySelector('.popup_calc_profile_button'),
+          popCalcProfileClose = document.querySelector('.popup_calc_profile_close'),
+          popCalcEnd = document.querySelector('.popup_calc_end'),
+          popCalcEndClose = popCalcEnd.querySelector('.popup_calc_end_close'),
+          popEngForm = popEng.querySelector('.form'),
           popup = document.querySelector('.popup'),
-          content = document.getElementsByClassName('popup_content')[0];
+          popupClose = document.querySelectorAll('.popup_close'),
+          popupCalcClose = document.querySelector('.popup_calc_close'),
+          phoneLink = document.querySelectorAll('.phone_link'),
+          btnCalc = document.querySelectorAll('.popup_calc_btn');
 
-      phone.addEventListener('click', function () {
-        popup.style.display = "block";
+      console.log(btnPopCalc);
+
+      btnPopCalc.addEventListener('click', function () {
+        console.log(this);
+        modalClose(popCalc);
+        modalOpen(popCalcProfile);
       });
 
-      phoneFutter.addEventListener('click', function () {
-        popup.style.display = "block";
+      btnPopCalcProfile.addEventListener('click', function () {
+        console.log(this);
+        modalClose(popCalcProfile);
+        modalOpen(popCalcEnd);
       });
 
-      popup.addEventListener('click', function (event) {
-        if (event.target == content || event.target == document.getElementsByClassName('popup_dialog')[0] || event.target == document.getElementsByClassName('popup_form')[0] || event.target == document.getElementsByClassName('form')[0] || event.target == document.getElementsByClassName('form-control')[12] || event.target == document.getElementsByClassName('form-control')[13]) {
-          popup.style.display = 'block';
-        } else {
-          popup.style.display = 'none';
+      function modalClose(pop) {
+        pop.style.display = '';
+      }
+
+      function modalOpen(pop) {
+        pop.style.display = 'block';
+      }
+
+      btnPopEng.addEventListener('click', function () {
+        console.log(this);
+        modalOpen(popEng);
+        modalOpen(popup);
+      });
+
+      phoneLink[0].addEventListener('click', function () {
+        modalOpen(popup);
+      });
+      phoneLink[1].addEventListener('click', function () {
+        event.preventDefault();
+        modalOpen(popup);
+      });
+      popupClose[0].addEventListener('click', function (event) {
+
+        modalClose(popup);
+      });
+
+      popupCalcClose.addEventListener('click', function (event) {
+
+        modalClose(popCalc);
+      });
+
+      popCalcProfileClose.addEventListener('click', function (event) {
+
+        modalClose(popCalcProfile);
+      });
+
+      popCalcEndClose.addEventListener('click', function (event) {
+
+        modalClose(popCalcEnd);
+      });
+
+      //
+      popupClose[1].addEventListener('click', function (event) {
+
+        modalClose(popEng);
+        modalClose(popup);
+      });
+      document.addEventListener('click', function (e) {
+
+        if (e.target == popEng) {
+          modalClose(popEng);
+          modalClose(popup);
+        }
+
+        if (e.target == popup) {
+          modalClose(popup);
+        }
+
+        if (e.target.classList.contains('popup_calc_btn')) {
+
+          modalOpen(popCalc);
         }
       });
 
       setTimeout(function () {
-        popup.style.display = "block";
+        modalOpen(popup);
       }, 60000);
     };
-    module.exports = modalPhone;
-  }, {}], 7: [function (require, module, exports) {
+    module.exports = modale;
+  }, {}], 6: [function (require, module, exports) {
     function tabs() {
       var tab = document.getElementsByClassName('glazing_block'),
           glazing = document.getElementsByClassName('glazing')[0],
@@ -411,18 +367,18 @@
         }
       }
 
-      var _loop4 = function _loop4(i) {
+      var _loop3 = function _loop3(i) {
         tab[i].addEventListener('click', function () {
           showTabContent(i);
         });
       };
 
       for (var i = 0; i < tab.length; i++) {
-        _loop4(i);
+        _loop3(i);
       }
     }
     module.exports = tabs;
-  }, {}], 8: [function (require, module, exports) {
+  }, {}], 7: [function (require, module, exports) {
     function tabsDec() {
       var noClick = document.querySelectorAll('.no_click'),
           decor = document.querySelector('.decoration'),
@@ -453,7 +409,7 @@
       });
     }
     module.exports = tabsDec;
-  }, {}], 9: [function (require, module, exports) {
+  }, {}], 8: [function (require, module, exports) {
     function timer(deadLine) {
 
       var eTimer = document.getElementsByClassName('eTimer')[0];
