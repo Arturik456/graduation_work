@@ -1,6 +1,6 @@
 function calc() {
-	
- let popupCalcCont = document.querySelector('.popup_calc_content'),
+
+  let popupCalcCont = document.querySelector('.popup_calc_content'),
       balconIcons = popupCalcCont.querySelector('.balcon_icons'),
       imgMini = balconIcons.getElementsByTagName('img'),
       bigImg = popupCalcCont.querySelector('.big_img'),
@@ -11,7 +11,8 @@ function calc() {
       checkbox = document.getElementsByClassName('checkbox'),
       popCalcEnd = document.querySelector('.popup_calc_end'),
       popupFormCalcEnd = popCalcEnd.querySelector('.popup_form');
-
+  
+    // console.log(select.options[select.selectedIndex].value);
 
   popupFormCalcEnd.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -21,12 +22,11 @@ function calc() {
         request.setRequestHeader('Content-Type', 'aplication/x-www-form-urlencoded');
 
     let formData = new FormData(data);
+    console.log(data);
     
     console.log(formData);
 
     request.send(formData);
-
-
 
     data.type = '';
     data.width = 0;
@@ -37,7 +37,6 @@ function calc() {
     inputHeight.value = '';
     checkbox[0].checked = false;
     checkbox[1].checked = false;
-
 
   });
 
@@ -64,7 +63,9 @@ function calc() {
       if (checkbox[a].checked) {
         checkbox[b].checked = false;
       };
-
+      // if (checkbox[1].checked) {
+      //   checkbox[0].checked = false;
+      // };
       for (let i = 0; i < checkbox.length; i++) {
         if (checkbox[0].checked) {
           data.cold = true;          
@@ -79,6 +80,7 @@ function calc() {
       }
       console.log(data);
   };
+  // check();
 
   checkbox[0].addEventListener('click', () => {
     check(0,1);
@@ -95,12 +97,12 @@ function calc() {
     cold : false,
     warm : false
   };
-  
 
   popupCalcCont.addEventListener('click', (e) => {
     e.preventDefault();
     let target = e.target;
     
+    // console.log(target);
     for (let i = 0; i < imgMini.length; i++) {
       if (target == imgMini[i]) {
         console.log('равно ' + imgMini[i].src);
@@ -115,11 +117,12 @@ function calc() {
 
         break;
       }
+     console.log('тест ' + target);
       
     }
   });
 
 
-};
+}
 
 module.exports = calc;
