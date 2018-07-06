@@ -31,176 +31,386 @@
       tabs();
       tabsDec();
       img();
-      time('2018-07-7');
+      time();
     });
   }, { "../parts/ajax.js": 2, "../parts/calc.js": 3, "../parts/img.js": 4, "../parts/modal.js": 5, "../parts/tabs.js": 6, "../parts/tabsDec.js": 7, "../parts/time.js": 8 }], 2: [function (require, module, exports) {
     function ajax() {
 
       var message = new Object();
-      message.loading = "Загрузка...";
-      message.success = 'Спасибо, скоро мы с вами свяжемся!';
-      message.failure = 'Что-то пошло не так...';
+      message.loading = "Загрузка ...";
+      message.success = "Спасибо! Скоро мы с вами свяжемся";
+      message.failure = "Что-то пошло не так...";
 
-      var form = document.getElementsByTagName('form'),
-          input = document.getElementsByTagName('input'),
+      var mainForm = document.getElementsByClassName('main_form'),
+          form = document.getElementsByClassName('form')[7],
+          popupForm = document.querySelector('.popup_form'),
+          popCalcEnd = document.querySelector('.popup_calc_end'),
+          popupFormCalcEnd = popCalcEnd.querySelector('.popup_form'),
           statusMessage = document.createElement('div');
 
-      var _loop = function _loop(i) {
-        form[i].addEventListener('submit', function (event) {
-          event.preventDefault();
-          form[i].appendChild(statusMessage);
+      statusMessage.classList.add('status');
 
-          var messageTimeOut = setTimeout(function () {
-            statusMessage.innerHTML = '';
-          }, 7000);
+      console.log(popupFormCalcEnd);
 
-          //AJAX
-          var request = new XMLHttpRequest();
-          request.open('POST', 'server.php');
-          request.setRequestHeader('Content-Type', 'aplication/x-www-form-urlencoded');
+      function onlyNumber(target) {
+        if (target.getAttribute('name') == 'user_phone') {
+          target.value = target.value.replace(/[^\d]/g, '');
+        };
+      }
 
-          var formData = new FormData(form[i]);
+      popupFormCalcEnd.addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
 
-          request.send(formData);
+      mainForm[0].addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
 
-          request.onreadystatechange = function () {
-            if (request.readyState < 4) {
-              statusMessage.innerHTML = message.loading;
-              messageTimeOut();
-            } else if (request.readyState === 4) {
-              if (request.status == 200 && request.status < 300) {
-                statusMessage.textContent = message.success;
-                messageTimeOut();
-              };
+      mainForm[1].addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
+      mainForm[2].addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
+      mainForm[3].addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
+      mainForm[4].addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
+      mainForm[5].addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
+      popupForm.addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
+      form.addEventListener('keyup', function (e) {
+        var target = e.target;
+        onlyNumber(target);
+      });
+
+      function sendData(data) {
+
+        data.appendChild(statusMessage);
+
+        var request = new XMLHttpRequest();
+        request.open("POST", 'server.php');
+
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        var formData = new FormData(data);
+
+        request.send(formData);
+
+        request.onreadystatechange = function () {
+          if (request.readyState < 4) {
+            statusMessage.innerHTML = message.loading;
+            console.log('загрузка');
+          } else if (request.readyState === 4) {
+            if (request.status == 200 && request.status < 300) {
+              statusMessage.innerHTML = message.success;
+              // Добавляем контент на страницу
+              console.log('успешно');
             } else {
-              statusMessage.textContent = message.failure;
-              messageTimeOut();
+              statusMessage.innerHTML = message.failure;
+              console.log('ошибка');
             }
-          };
-          for (var _i = 0; _i < input.length; _i++) {
-            input[_i].value = '';
-          };
-        });
-      };
+          }
+        };
+        var input = data.getElementsByTagName('input');
+        // console.log(input);
+        for (var i = 0; i < input.length; i++) {
+          input[i].value = '';
+          // Очищаем поля ввода          
+        }
+        // console.log('функция сработала');
+      }
 
-      for (var i = 0; i < form.length; i++) {
-        _loop(i);
-      };
-    };
+      popupFormCalcEnd.addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
+        sendData(popupFormCalcEnd);
+      });
+
+      mainForm[0].addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
+        sendData(mainForm[0]);
+      });
+      mainForm[1].addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
+        sendData(mainForm[1]);
+      });
+      mainForm[2].addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
+        sendData(mainForm[2]);
+      });
+      mainForm[3].addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
+        sendData(mainForm[3]);
+      });
+      mainForm[5].addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
+        sendData(mainForm[5]);
+      });
+      popupForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
+        sendData(popupForm);
+      });
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        //AJAX
+        sendData(form);
+      });
+    }
 
     module.exports = ajax;
   }, {}], 3: [function (require, module, exports) {
     function calc() {
+
+      var buttonCalc = document.getElementsByClassName('glazing_price_btn'),
+          popupCalc = document.getElementsByClassName('popup_calc')[0],
+          popupCalcProfile = document.getElementsByClassName('popup_calc_profile')[0],
+          popupCalcProfileClose = document.getElementsByClassName('popup_calc_profile_close')[0],
+          popupCalcClose = document.getElementsByClassName('popup_calc_close')[0],
+          popupCalcButton = document.getElementsByClassName('popup_calc_button')[0],
+          inputWidth = document.getElementById('width'),
+          inputHeight = document.getElementById('height');
+
+      //объект
+      var data = {};
+
+      function checkInput(inp) {
+        inp.addEventListener('keypress', function (inp) {
+          var that = this;
+          setTimeout(function () {
+            var res = /[^0-999]/g.exec(that.value);
+            that.value = that.value.replace(res, '');
+          }, 0);
+        });
+      };
+
+      checkInput(inputWidth);
+      checkInput(inputHeight);
+
+      for (var i = 0; i < buttonCalc.length; i++) {
+        buttonCalc[i].addEventListener('click', function () {
+          popupCalc.classList.add('show');
+          popupCalc.classList.add('animated');
+          popupCalc.classList.remove('fadeOut');
+          popupCalc.classList.add('fadeIn');
+        });
+      };
+      popupCalcClose.addEventListener('click', popupClose);
+
+      function popupClose() {
+        popupCalc.classList.remove('fadeIn');
+        popupCalc.classList.add('fadeOut');
+        inputWidth.value = '';
+        inputHeight.value = '';
+        data = {};
+        setTimeout(function () {
+          popupCalc.classList.remove('show');
+          popupCalc.classList.add('hide');
+        }, 750);
+      }
+      // табы
+      function tabsCalc(event) {
+        var type = document.querySelectorAll('div.balcon_icons>a'),
+            typeImg = document.querySelectorAll('div.balcon_icons>a>img'),
+            typeContent = document.querySelectorAll('div.big_img>img');
+
+        function hideTabContent(a) {
+          for (var _i = a; _i < typeContent.length; _i++) {
+            typeContent[_i].classList.remove('show');
+            typeContent[_i].classList.add('hide');
+            typeContent[_i].classList.add('animated');
+            typeContent[_i].classList.add('fadeIn');
+            typeImg[_i].classList.remove('scale');
+          };
+        };
+        hideTabContent(1);
+
+        function showTabContent(b) {
+          if (typeContent[b].classList.contains('hide')) {
+            hideTabContent(0);
+            typeImg[b].classList.add('scale');
+            typeContent[b].classList.remove('hide');
+            typeContent[b].classList.add('show');
+          };
+        };
+
+        var _loop = function _loop(_i2) {
+          type[_i2].addEventListener('click', function (event) {
+            event.preventDefault();
+            typeContent[_i2].setAttribute('value', _i2 + 1);
+            data.type = typeContent[_i2].getAttribute('value');
+            showTabContent(_i2);
+          });
+        };
+
+        for (var _i2 = 0; _i2 < type.length; _i2++) {
+          _loop(_i2);
+        };
+      }
+      tabsCalc();
 
       var popupCalcCont = document.querySelector('.popup_calc_content'),
           balconIcons = popupCalcCont.querySelector('.balcon_icons'),
           imgMini = balconIcons.getElementsByTagName('img'),
           bigImg = popupCalcCont.querySelector('.big_img'),
           imgBig = bigImg.getElementsByTagName('img'),
-          inputWidth = document.getElementById('width'),
-          inputHeight = document.getElementById('height'),
-          select = document.getElementById('view_type'),
-          checkbox = document.getElementsByClassName('checkbox'),
           popCalcEnd = document.querySelector('.popup_calc_end'),
           popupFormCalcEnd = popCalcEnd.querySelector('.popup_form');
 
-      popupFormCalcEnd.addEventListener('submit', function (event) {
-        event.preventDefault();
-        //AJAX
+      popupCalcCont.addEventListener('click', function (e) {
+        e.preventDefault();
+        var target = e.target;
+
+        console.log(target);
+        for (var _i3 = 0; _i3 < imgMini.length; _i3++) {
+          if (target == imgMini[_i3]) {
+            console.log('равно ' + imgMini[_i3].src);
+            for (var t = 0; t < imgMini.length; t++) {
+              imgMini[t].style.width = '80px';
+            }
+            imgMini[_i3].style.width = '120px';
+            for (var _j = 0; _j < imgBig.length; _j++) {
+              imgBig[_j].style.display = 'none';
+            }
+            imgBig[j].style.display = 'inline-block';
+            break;
+          }
+          console.log('тест ' + target);
+        }
+      });
+
+      setInterval(function () {
+        if (inputWidth.value == '' || inputHeight.value == '') {
+          popupCalcButton.setAttribute('disabled', 'true');
+        } else {
+          popupCalcButton.removeAttribute('disabled', 'true');
+        }
+      }, 0);
+
+      //кнопка Далее
+      popupCalcButton.addEventListener('click', function () {
+        data.width = inputWidth.value;
+        data.height = inputHeight.value;
+        popupCalcProfile.classList.remove('fadeOut');
+        popupCalc.classList.remove('show');
+        popupCalc.classList.add('hide');
+        popupCalcProfile.classList.add('show');
+        popupCalcProfile.classList.add('animated');
+      });
+
+      //profile
+      popupCalcProfileClose.addEventListener('click', popupProfileClose);
+
+      function popupProfileClose() {
+        popupCalcProfile.classList.remove('fadeIn');
+        popupCalcProfile.classList.add('fadeOut');
+        inputWidth.value = '';
+        inputHeight.value = '';
+        for (var _i4 = 0; _i4 < checkbox.length; _i4++) {
+          checkbox[_i4].checked = false;
+        };
+        data = {};
+        setTimeout(function () {
+          popupCalcProfile.classList.remove('show');
+          popupCalcProfile.classList.add('hide');
+        }, 700);
+      }
+
+      var select = document.getElementById('view_type'),
+          buttonProfile = document.getElementsByClassName('popup_calc_profile_button')[0],
+          checkboxCustom = document.getElementsByClassName('checkbox-custom'),
+          checkbox = document.getElementsByClassName('checkbox'),
+          checkboxCold = document.getElementById('cold'),
+          checkboxWarm = document.getElementById('warm'),
+          popupCalcEnd = document.getElementsByClassName('popup_calc_end')[0];
+
+      function check() {
+        setInterval(function () {
+          if (checkbox[0].checked === false && checkbox[1].checked === false) {
+            buttonProfile.setAttribute('disabled', 'true');
+          } else {
+            buttonProfile.removeAttribute('disabled', 'true');
+          }
+          checkbox[0].addEventListener('click', function () {
+            checkbox[1].checked = false;
+            buttonProfile.removeAttribute('disabled', 'true');
+          });
+          checkbox[1].addEventListener('click', function () {
+            checkbox[0].checked = false;
+            buttonProfile.removeAttribute('disabled', 'true');
+          });
+        }, 0);
+      };
+      check();
+
+      buttonProfile.addEventListener('click', function () {
+        data.category = select.options[select.selectedIndex].value;
+        for (var _i5 = 0; _i5 < checkbox.length; _i5++) {
+          if (checkbox[_i5].checked) {
+            data.checkbox = checkboxCustom[_i5].className.slice(16);
+          };
+        };
+        popupCalcProfile.classList.remove('show');
+        popupCalcProfile.classList.add('hide');
+        popupCalcEnd.classList.add('show');
+      });
+
+      //popupEnd
+      var popupCalcEndClose = document.getElementsByClassName('popup_calc_end_close')[0],
+          form = document.getElementsByClassName('form'),
+          inputName = document.querySelector('input.name'),
+          inputPhone = document.querySelector('input.phone'),
+          buttonCalcEnd = document.getElementsByClassName('btn-block')[8];
+
+      popupCalcEndClose.addEventListener('click', function () {
+        popupCalcEnd.classList.add('animated');
+        popupCalcEnd.classList.add('fadeOut');
+        inputWidth.value = '';
+        inputHeight.value = '';
+        for (var _i6 = 0; _i6 < checkbox.length; _i6++) {
+          checkbox[_i6].checked = false;
+        };
+        data = {};
+        setTimeout(function () {
+          popupCalcEnd.classList.remove('show');
+          popupCalcEnd.classList.add('hide');
+          popupCalcEnd.classList.remove('fadeOut');
+        }, 700);
+      });
+
+      buttonCalcEnd.addEventListener('click', function () {
+        data.userName = inputName.value;
+        data.userPhone = inputPhone.value;
+
+        //ajax
         var request = new XMLHttpRequest();
         request.open('POST', 'server.php');
         request.setRequestHeader('Content-Type', 'aplication/x-www-form-urlencoded');
 
         var formData = new FormData(data);
 
-        console.log(formData);
-
         request.send(formData);
-
-        data.type = '';
-        data.width = 0;
-        data.height = 0;
-        data.cold = false;
-        data.warm = false;
-        inputWidth.value = '';
-        inputHeight.value = '';
-        checkbox[0].checked = false;
-        checkbox[1].checked = false;
       });
-
-      select.addEventListener('change', function () {
-        data.type = select.value;
-        console.log(data);
-      });
-
-      inputWidth.addEventListener('keyup', function () {
-        inputWidth.value = inputWidth.value.replace(/[^\d]/g, '');
-        data.width = inputWidth.value;
-        console.log(data);
-      });
-      inputHeight.addEventListener('keyup', function () {
-        inputHeight.value = inputHeight.value.replace(/[^\d]/g, '');
-        data.height = inputHeight.value;
-        console.log(data);
-      });
-
-      function check(a, b) {
-
-        if (checkbox[a].checked) {
-          checkbox[b].checked = false;
-        };
-
-        for (var i = 0; i < checkbox.length; i++) {
-          if (checkbox[0].checked) {
-            data.cold = true;
-          } else {
-            data.cold = false;
-          };
-          if (checkbox[1].checked) {
-            data.warm = true;
-          } else {
-            data.warm = false;
-          };
-        }
-        console.log(data);
-      };
-
-      checkbox[0].addEventListener('click', function () {
-        check(0, 1);
-      });
-      checkbox[1].addEventListener('click', function () {
-        check(1, 0);
-      });
-
-      var data = {
-        type: String,
-        width: 0,
-        height: 0,
-        cold: false,
-        warm: false
-      };
-
-      popupCalcCont.addEventListener('click', function (e) {
-        e.preventDefault();
-        var target = e.target;
-
-        for (var i = 0; i < imgMini.length; i++) {
-          if (target == imgMini[i]) {
-            console.log('равно ' + imgMini[i].src);
-            for (var t = 0; t < imgMini.length; t++) {
-              imgMini[t].style.width = '60px';
-            }
-            imgMini[i].style.width = '150px';
-            for (var _t = 0; _t < imgBig.length; _t++) {
-              imgBig[_t].style.display = 'none';
-            }
-            imgBig[i].style.display = 'inline-block';
-
-            break;
-          }
-        }
-      });
-    };
+    }
 
     module.exports = calc;
   }, {}], 4: [function (require, module, exports) {
@@ -220,8 +430,8 @@
           divImage.style.display = 'flex';
           works.appendChild(divImage);
           divImage.appendChild(imgPic);
-          for (var _i2 = 0; _i2 < zoomIn.length; _i2++) {
-            zoomIn[_i2].getAttribute('href');
+          for (var _i7 = 0; _i7 < zoomIn.length; _i7++) {
+            zoomIn[_i7].getAttribute('href');
           }
           imgPic.setAttribute('src', zoomIn[i].href);
         });
@@ -410,17 +620,31 @@
     }
     module.exports = tabsDec;
   }, {}], 8: [function (require, module, exports) {
-    function timer(deadLine) {
+    function timer() {
 
-      var eTimer = document.getElementsByClassName('eTimer')[0];
+      var deadline = '2018-07-7';
 
-      function getTime(endtime) {
+      function getTimeRemaining(endtime) {
         var t = Date.parse(endtime) - Date.parse(new Date()),
-            seconds = Math.floor(t / 1000 % 60),
-            minutes = Math.floor(t / (1000 * 60) % 60),
-            hours = Math.floor(t / (1000 * 60 * 60) % 24),
-            days = Math.floor(t / (1000 * 60 * 60 * 24));
-
+            seconds = 0,
+            minutes = 0,
+            hours = 0,
+            days = 0,
+            offset = new Date().getTimezoneOffset() / 60;
+        if (t > 0) {
+          // console.log('if');
+          seconds = Math.floor(t / 1000 % 60);
+          minutes = Math.floor(t / 1000 / 60 % 60);
+          hours = Math.floor(t / (1000 * 60 * 60) + offset);
+          days = Math.floor(t / (1000 * 60 * 60 * 24));
+          // console.log(hours);
+        } else {
+          // console.log('else');
+          seconds = 0;
+          minutes = 0;
+          hours = 0;
+          days = 0;
+        }
         return {
           'total': t,
           'days': days,
@@ -430,37 +654,43 @@
         };
       };
 
-      function setClock(id, endtime) {
-        var timer = document.getElementById(id),
-            days = document.querySelector('.days'),
-            hours = document.querySelector('.hours'),
-            minutes = document.querySelector('.minutes'),
-            seconds = document.querySelector('.seconds');
-
-        function updateClock() {
-          var t = getTime(endtime);
-          var arrTime = [t.days, t.hours, t.minutes, t.seconds];
-          for (var i = 0; i < arrTime.length; i++) {
-            if (arrTime[i] < 10) {
-              arrTime[i] = '0' + arrTime[i];
-            };
-          };
-          days.innerHTML = arrTime[0];
-          hours.innerHTML = arrTime[1];
-          minutes.innerHTML = arrTime[2];
-          seconds.innerHTML = arrTime[3];
-          if (t.total <= 0) {
-            clearInterval(timeInterval);
-            days.innerHTML = '00';
-            hours.innerHTML = '00';
-            minutes.innerHTML = '00';
-            seconds.innerHTML = '00';
-          };
-        };
-        var timeInterval = setInterval(updateClock, 1000);
+      function countNumber(i) {
+        var a = String(i),
+            b = 0;
+        if (a.length == 1) {
+          a = 0 + '' + i;
+        } else {
+          a = i;
+        }
+        return a;
       };
 
-      setClock(eTimer, deadLine);
+      function setClock(id, endtime) {
+
+        var timer = document.getElementsByClassName(id)[0],
+            days = timer.querySelector('.days'),
+            hours = timer.querySelector('.hours'),
+            minutes = timer.querySelector('.minutes'),
+            seconds = timer.querySelector('.seconds');
+
+        function updateClock() {
+          var t = getTimeRemaining(endtime);
+          // console.log('проверка' + t);
+          // hours.innerHTML = '0' + t.hours,
+          days.innerHTML = countNumber(t.days), hours.innerHTML = countNumber(t.hours), minutes.innerHTML = countNumber(t.minutes), seconds.innerHTML = countNumber(t.seconds);
+
+          if (t.total <= 0) {
+            clearInterval(timeInterval);
+          }
+        };
+
+        var timeInterval = setInterval(updateClock, 1000);
+
+        updateClock();
+        // console.log('проверка тут');
+      };
+
+      setClock('eTimer', deadline);
     }
 
     module.exports = timer;

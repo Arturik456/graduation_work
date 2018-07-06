@@ -702,30 +702,40 @@
     </section>
 
     <!-- Sale -->
-    <section class="sale">
+     <section class="sale">
       <div class="container">
         <div class="row">
           <div class="col-lg-5 col-md-6 wow fadeInLeft">
             <h2 class="sale_title">Акция - 60%</h2>
             <p class="sale_subtitle">Успей сэкономить на остеклении! Только до 4 июля!</p>
-            <div class="timer">
-             <div class="eTimer">
-                
-                <div class="timer-block">
-                  <span id="days" class="days timer-number"></span>
-                  <ladel class="timer-label" for="days">дней</ladel>
-                </div>
-                <div class="timer-block">
-                  <span id="hours" class="hours timer-number"></span>
-                  <ladel class="timer-label" for="hours">часов</ladel>
-                </div>
-                <div class="timer-block">
-                  <span id="minutes" class="minutes timer-number"></span>
-                  <ladel class="timer-label" for="minutes">минут</ladel>
-                </div>
-                <div class="timer-block">
-                  <span id="seconds" class="seconds timer-number"></span>
-                  <ladel class="timer-label" for="seconds">секунд</ladel>
+            <div class="timer">              
+              <div class="eTimer">
+                <span class="timer_title">До завершения акции:</span>
+                <div class="times_wrap">
+                  <div class="times">
+                    <span class="days number">05</span>
+                    <span class="times_caption">
+                      дней
+                    </span>
+                  </div>
+                  <div class="times">
+                    <span class="hours number">18</span>
+                    <span class="times_caption">
+                      часов
+                    </span>
+                  </div>
+                  <div class="times">
+                    <span class="minutes number">20</span>
+                    <span class="times_caption">
+                      минут
+                    </span>
+                  </div>
+                  <div class="times">
+                    <span class="seconds number">11</span>
+                    <span class="times_caption">
+                      секунд
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -874,7 +884,6 @@
             </div>
         </div>
     </div> 
-
    <div class="popup_calc_profile">
         <div class="popup_dialog">
             <div class="popup_calc_profile_content text-center">
@@ -891,13 +900,13 @@
                  <img src="img/modal_calc/icon_cold.png" alt="">
                  <label>
                      <input class="checkbox" type="checkbox" name="checkbox-test">
-                     <span class="checkbox-custom" id="cold"></span>
+                     <span class="checkbox-custom cold" id="cold"></span>
                      <span class="label">Холодное</span>
                  </label>
                  <img src="img/modal_calc/icon_warm.png" alt="">
                  <label>
                      <input class="checkbox" type="checkbox" name="checkbox-test">
-                     <span class="checkbox-custom" id="warm"></span>
+                     <span class="checkbox-custom warm" id="warm" ></span>
                      <span class="label">Теплое</span>
                  </label>
 
@@ -913,8 +922,8 @@
                 <div class="popup_form">
                     <form class="form" action="#">
                       <h2>Спасибо за обращение! <br>Оставьте свои данные</h2>
-                        <input class="form-control form_input" name="user_name" required type="text" placeholder="Введите ваше имя">
-                        <input class="form-control form_input" name="user_phone" required type="text" placeholder="Введите телефон">
+                        <input class="form-control form_input name " name="user_name" required type="text" placeholder="Введите ваше имя">
+                        <input class="form-control form_input phone" name="user_phone" required type="text" placeholder="Введите телефон">
                         <button class="text-uppercase btn-block button" name="submit" type="submit">Рассчитать стоимость</button>
                         <p class="form_notice">Перезвоним в течение 10 минут</p>
                     </form>

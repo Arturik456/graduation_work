@@ -16,189 +16,392 @@ window.addEventListener('DOMContentLoaded', function() {
 	tabs();
 	tabsDec();
 	img();
-	time('2018-07-7');
+	time();
 
 
 });
 },{"../parts/ajax.js":2,"../parts/calc.js":3,"../parts/img.js":4,"../parts/modal.js":5,"../parts/tabs.js":6,"../parts/tabsDec.js":7,"../parts/time.js":8}],2:[function(require,module,exports){
 function ajax() {
-	
-let message = new Object();
-	message.loading = "Загрузка...";
-	message.success = 'Спасибо, скоро мы с вами свяжемся!';
-	message.failure = 'Что-то пошло не так...';
 
-let form = document.getElementsByTagName('form'),
-	input = document.getElementsByTagName('input'),
-	statusMessage = document.createElement('div');
+  let message = new Object();
+      message.loading = "Загрузка ...";
+      message.success = "Спасибо! Скоро мы с вами свяжемся";
+      message.failure = "Что-то пошло не так...";
 
+  let mainForm = document.getElementsByClassName('main_form'),
+      form = document.getElementsByClassName('form')[7],
+      popupForm = document.querySelector('.popup_form'),
+      popCalcEnd = document.querySelector('.popup_calc_end'),
+      popupFormCalcEnd = popCalcEnd.querySelector('.popup_form'),
+      statusMessage = document.createElement('div');
 
-  for (let i = 0; i < form.length; i++) {
-    form[i].addEventListener('submit', (event) => {
-      event.preventDefault();
-      form[i].appendChild(statusMessage);
+      statusMessage.classList.add('status');
 
-      let messageTimeOut = setTimeout(() => {
-        statusMessage.innerHTML = '';
-      }, 7000);
+  console.log(popupFormCalcEnd);
 
-      //AJAX
-      let request = new XMLHttpRequest();
-      request.open('POST', 'server.php');
-      request.setRequestHeader('Content-Type', 'aplication/x-www-form-urlencoded');
+  function onlyNumber(target) {
+    if (target.getAttribute('name') == 'user_phone') {
+      target.value = target.value.replace(/[^\d]/g, '');
+    };
+  }
 
-      let formData = new FormData(form[i]);
+  popupFormCalcEnd.addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
 
-      request.send(formData);
+  mainForm[0].addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
 
-      request.onreadystatechange = () => {
-        if (request.readyState < 4) {
-          statusMessage.innerHTML = message.loading;
-          messageTimeOut();
-        } else if (request.readyState === 4) {
+  mainForm[1].addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
+  mainForm[2].addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
+  mainForm[3].addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
+  mainForm[4].addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
+  mainForm[5].addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
+  popupForm.addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
+  form.addEventListener('keyup', (e) => {
+    let target = e.target;
+    onlyNumber(target);
+  });
+
+  function sendData(data) {    
+
+    data.appendChild(statusMessage);
+
+    let request = new XMLHttpRequest();
+    request.open("POST", 'server.php');
+
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    let formData = new FormData(data);
+
+    request.send(formData);
+
+    request.onreadystatechange = function() {
+      if (request.readyState < 4) {
+        statusMessage.innerHTML = message.loading;
+        console.log('загрузка');
+      } else if (request.readyState === 4) {
           if (request.status == 200 && request.status < 300) {
-            statusMessage.textContent = message.success;
-            messageTimeOut();
-          };
-        } else {
-          statusMessage.textContent = message.failure;
-          messageTimeOut();
+            statusMessage.innerHTML = message.success;
+            // Добавляем контент на страницу
+            console.log('успешно');
+          }
+          else {
+            statusMessage.innerHTML = message.failure;
+            console.log('ошибка');
+          }
         }
-      }
-      for (let i = 0; i < input.length; i++) {
-        input[i].value = '';
-      };
-    });
-  };
-  
-};
+    }
+    let input = data.getElementsByTagName('input')
+    // console.log(input);
+    for (let i = 0; i < input.length; i++) {
+      input[i].value = '';
+      // Очищаем поля ввода          
+    }
+    // console.log('функция сработала');
+  }
+
+  popupFormCalcEnd.addEventListener('submit', function(event) {
+    event.preventDefault();
+    //AJAX
+    sendData(popupFormCalcEnd);    
+  });
+
+  mainForm[0].addEventListener('submit', function(event) {
+    event.preventDefault();
+    //AJAX
+    sendData(mainForm[0]);    
+  });
+  mainForm[1].addEventListener('submit', function(event) {
+    event.preventDefault();
+    //AJAX
+    sendData(mainForm[1]);    
+  });
+  mainForm[2].addEventListener('submit', function(event) {
+    event.preventDefault();
+    //AJAX
+    sendData(mainForm[2]);    
+  });
+  mainForm[3].addEventListener('submit', function(event) {
+    event.preventDefault();
+    //AJAX
+    sendData(mainForm[3]);    
+  });
+  mainForm[5].addEventListener('submit', function(event) {
+    event.preventDefault();
+    //AJAX
+    sendData(mainForm[5]);    
+  });
+  popupForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    //AJAX
+    sendData(popupForm);    
+  });
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    //AJAX
+    sendData(form);    
+  });
+
+}
 
 module.exports = ajax;
 },{}],3:[function(require,module,exports){
 function calc() {
+	
+ let buttonCalc = document.getElementsByClassName('glazing_price_btn'),
+  popupCalc = document.getElementsByClassName('popup_calc')[0],
+  popupCalcProfile = document.getElementsByClassName('popup_calc_profile')[0],
+  popupCalcProfileClose = document.getElementsByClassName('popup_calc_profile_close')[0],
+  popupCalcClose = document.getElementsByClassName('popup_calc_close')[0],
+  popupCalcButton = document.getElementsByClassName('popup_calc_button')[0],
+  inputWidth = document.getElementById('width'),
+  inputHeight = document.getElementById('height');
+
+  //объект
+  let data = {};
+
+  function checkInput(inp) {
+    inp.addEventListener('keypress', function(inp) {
+      let that = this;
+      setTimeout(function() {
+          let res = /[^0-999]/g.exec(that.value);
+          that.value = that.value.replace(res, '');
+      }, 0);
+    });
+  };
+
+  checkInput(inputWidth);
+  checkInput(inputHeight);
+      
+
+  for (let i = 0; i < buttonCalc.length; i++) {
+    buttonCalc[i].addEventListener('click', () => {
+      popupCalc.classList.add('show');
+      popupCalc.classList.add('animated');
+      popupCalc.classList.remove('fadeOut');
+      popupCalc.classList.add('fadeIn');
+    })
+  };
+  popupCalcClose.addEventListener('click', popupClose);
+
+
+  function popupClose() {
+    popupCalc.classList.remove('fadeIn');
+    popupCalc.classList.add('fadeOut');
+    inputWidth.value = '';
+    inputHeight.value = '';
+    data = {};
+    setTimeout(() => {
+      popupCalc.classList.remove('show');
+      popupCalc.classList.add('hide');
+    }, 750);
+  }
+  // табы
+  function tabsCalc(event) {
+    let type = document.querySelectorAll('div.balcon_icons>a'),
+    typeImg  = document.querySelectorAll('div.balcon_icons>a>img'),
+    typeContent = document.querySelectorAll('div.big_img>img');
+
+    function hideTabContent(a) {
+      for (let i = a; i < typeContent.length; i++) {
+        typeContent[i].classList.remove('show');
+        typeContent[i].classList.add('hide');
+        typeContent[i].classList.add('animated');
+        typeContent[i].classList.add('fadeIn');
+        typeImg[i].classList.remove('scale');
+      };
+    };
+    hideTabContent(1);
+    
+    function showTabContent(b) {
+      if (typeContent[b].classList.contains('hide')) {
+        hideTabContent(0);
+        typeImg[b].classList.add('scale');
+        typeContent[b].classList.remove('hide');
+        typeContent[b].classList.add('show');
+      };
+    };
+
+    for (let i = 0; i < type.length; i++) {
+      type[i].addEventListener('click', (event) => {
+        event.preventDefault();
+        typeContent[i].setAttribute('value', i+1);
+        data.type = typeContent[i].getAttribute('value');
+        showTabContent(i);
+      })
+    };
+  }
+  tabsCalc();
 
   let popupCalcCont = document.querySelector('.popup_calc_content'),
       balconIcons = popupCalcCont.querySelector('.balcon_icons'),
       imgMini = balconIcons.getElementsByTagName('img'),
       bigImg = popupCalcCont.querySelector('.big_img'),
       imgBig = bigImg.getElementsByTagName('img'),
-      inputWidth = document.getElementById('width'),
-      inputHeight = document.getElementById('height'),
-      select = document.getElementById('view_type'),
-      checkbox = document.getElementsByClassName('checkbox'),
       popCalcEnd = document.querySelector('.popup_calc_end'),
       popupFormCalcEnd = popCalcEnd.querySelector('.popup_form');
-  
-    // console.log(select.options[select.selectedIndex].value);
 
-  popupFormCalcEnd.addEventListener('submit', function(event) {
-    event.preventDefault();
-    //AJAX
-    let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'aplication/x-www-form-urlencoded');
-
-    let formData = new FormData(data);
-    console.log(data);
-    
-    console.log(formData);
-
-    request.send(formData);
-
-    data.type = '';
-    data.width = 0;
-    data.height = 0;
-    data.cold = false;
-    data.warm = false;
-    inputWidth.value = '';
-    inputHeight.value = '';
-    checkbox[0].checked = false;
-    checkbox[1].checked = false;
-
-  });
-
-
-
-  select.addEventListener('change', () => {
-    data.type = select.value;
-    console.log(data);
-  });
-
-  inputWidth.addEventListener('keyup', () => {
-    inputWidth.value = inputWidth.value.replace(/[^\d]/g, '');
-    data.width = inputWidth.value;    
-    console.log(data);
-  });
-  inputHeight.addEventListener('keyup', () => {
-    inputHeight.value = inputHeight.value.replace(/[^\d]/g, '');
-    data.height = inputHeight.value;
-    console.log(data);  
-  });
-
-  function check(a,b) {
-    
-      if (checkbox[a].checked) {
-        checkbox[b].checked = false;
-      };
-      // if (checkbox[1].checked) {
-      //   checkbox[0].checked = false;
-      // };
-      for (let i = 0; i < checkbox.length; i++) {
-        if (checkbox[0].checked) {
-          data.cold = true;          
-        } else {
-          data.cold = false;            
-        };
-        if (checkbox[1].checked) {
-          data.warm = true;          
-        } else {
-          data.warm = false;            
-          };
-      }
-      console.log(data);
-  };
-  // check();
-
-  checkbox[0].addEventListener('click', () => {
-    check(0,1);
-
-  });
-  checkbox[1].addEventListener('click', () => {
-    check(1,0);
-  });
-
-  const data = {
-    type : String,
-    width : 0,
-    height : 0,
-    cold : false,
-    warm : false
-  };
-
-  popupCalcCont.addEventListener('click', (e) => {
+popupCalcCont.addEventListener('click', (e) => {
     e.preventDefault();
     let target = e.target;
     
-    // console.log(target);
+    console.log(target);
     for (let i = 0; i < imgMini.length; i++) {
       if (target == imgMini[i]) {
         console.log('равно ' + imgMini[i].src);
         for (let t = 0; t < imgMini.length; t++) {
-          imgMini[t].style.width = '60px';          
+          imgMini[t].style.width = '80px';          
         }
-        imgMini[i].style.width = '150px';
-        for (let t = 0; t < imgBig.length; t++) {
-          imgBig[t].style.display = 'none';          
+        imgMini[i].style.width = '120px';
+        for (let j = 0; j < imgBig.length; j++) {
+          imgBig[j].style.display = 'none';       
         }
-        imgBig[i].style.display = 'inline-block';
-
+          imgBig[j].style.display = 'inline-block';
         break;
       }
-     console.log('тест ' + target);
+      console.log('тест ' + target);
       
     }
   });
+  
 
+  setInterval(() => {
+    if (inputWidth.value == '' || inputHeight.value == '') {
+      popupCalcButton.setAttribute('disabled', 'true');
+     } else {
+      popupCalcButton.removeAttribute('disabled', 'true');
+     }
+  }, 0);
+
+  //кнопка Далее
+  popupCalcButton.addEventListener('click', () => {
+    data.width = inputWidth.value;
+    data.height = inputHeight.value;
+    popupCalcProfile.classList.remove('fadeOut');
+    popupCalc.classList.remove('show');
+    popupCalc.classList.add('hide');
+    popupCalcProfile.classList.add('show');
+    popupCalcProfile.classList.add('animated'); 
+  })
+
+  //profile
+  popupCalcProfileClose.addEventListener('click', popupProfileClose);
+
+  
+  function popupProfileClose() {
+    popupCalcProfile.classList.remove('fadeIn');
+    popupCalcProfile.classList.add('fadeOut');
+    inputWidth.value = '';
+    inputHeight.value = '';
+    for (let i = 0; i < checkbox.length; i++) {
+      checkbox[i].checked = false;
+    };
+    data = {};
+    setTimeout(() => {
+      popupCalcProfile.classList.remove('show');
+      popupCalcProfile.classList.add('hide');
+    }, 700);
+  }
+
+  let select = document.getElementById('view_type'),
+  buttonProfile = document.getElementsByClassName('popup_calc_profile_button')[0],
+  checkboxCustom = document.getElementsByClassName('checkbox-custom'),
+  checkbox = document.getElementsByClassName('checkbox'),
+  checkboxCold = document.getElementById('cold'),
+  checkboxWarm = document.getElementById('warm'),
+  popupCalcEnd = document.getElementsByClassName('popup_calc_end')[0];
+
+  function check() {
+    setInterval(() => {
+      if (checkbox[0].checked === false && checkbox[1].checked === false) {
+        buttonProfile.setAttribute('disabled', 'true');
+      } else {
+        buttonProfile.removeAttribute('disabled', 'true');
+      }
+      checkbox[0].addEventListener('click', function() {
+        checkbox[1].checked = false;
+        buttonProfile.removeAttribute('disabled', 'true');
+      })
+      checkbox[1].addEventListener('click', function() {
+        checkbox[0].checked = false;
+        buttonProfile.removeAttribute('disabled', 'true');
+      })
+    }, 0)
+    
+  };
+  check();
+
+  buttonProfile.addEventListener('click', () => {
+    data.category = select.options[select.selectedIndex].value;
+    for (let i = 0; i < checkbox.length; i++) {
+      if (checkbox[i].checked) {
+        data.checkbox = checkboxCustom[i].className.slice(16);
+      };
+    };
+    popupCalcProfile.classList.remove('show');
+    popupCalcProfile.classList.add('hide');
+    popupCalcEnd.classList.add('show');
+  })
+
+  //popupEnd
+  let popupCalcEndClose = document.getElementsByClassName('popup_calc_end_close')[0],
+  form = document.getElementsByClassName('form'),
+  inputName = document.querySelector('input.name'),
+  inputPhone = document.querySelector('input.phone'),
+  buttonCalcEnd = document.getElementsByClassName('btn-block')[8];
+
+  popupCalcEndClose.addEventListener('click', () => {
+     popupCalcEnd.classList.add('animated');
+     popupCalcEnd.classList.add('fadeOut');
+     inputWidth.value = '';
+     inputHeight.value = '';
+     for (let i = 0; i < checkbox.length; i++) {
+       checkbox[i].checked = false;
+     };
+     data = {};
+     setTimeout(() => {
+       popupCalcEnd.classList.remove('show');
+       popupCalcEnd.classList.add('hide');
+       popupCalcEnd.classList.remove('fadeOut');
+     }, 700)
+     
+  });
+
+  buttonCalcEnd.addEventListener('click', () => {
+    data.userName = inputName.value;
+    data.userPhone = inputPhone.value;
+    
+    //ajax
+    let request = new XMLHttpRequest();
+    request.open('POST', 'server.php');
+    request.setRequestHeader('Content-Type', 'aplication/x-www-form-urlencoded');
+
+    let formData = new FormData(data);
+
+    request.send(formData);
+  })
 
 }
 
@@ -417,57 +620,88 @@ let noClick = document.querySelectorAll('.no_click'),
  }
 module.exports = tabsDec;
 },{}],8:[function(require,module,exports){
-function timer(deadLine) {
+function timer() {
 
-	let eTimer = document.getElementsByClassName('eTimer')[0];
+  let deadline = '2018-07-7';
 
-	function getTime(endtime) {
-		let t = Date.parse(endtime) - Date.parse(new Date()),
-		seconds = Math.floor((t / 1000) % 60),
-		minutes = Math.floor((t / (1000 * 60) % 60)),
-		hours = Math.floor(t / (1000 * 60 * 60) % 24),
-		days = Math.floor(t / (1000 * 60 * 60 * 24));
+  function getTimeRemaining(endtime) {
+    let t = Date.parse(endtime) - Date.parse(new Date()),
+        seconds = 0,
+        minutes = 0,
+        hours = 0,
+        days = 0,
+        offset = new Date().getTimezoneOffset() / 60;
+        if (t > 0) {
+          // console.log('if');
+          seconds = Math.floor( (t/1000) % 60 );
+          minutes = Math.floor( (t/1000/60) % 60 );
+          hours = Math.floor( (t/(1000*60*60)) + offset );
+          days = Math.floor( (t/(1000*60*60*24)) );
+          // console.log(hours);
+        } else {
+            // console.log('else');
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
+            days = 0;
+          }
+        return {
+          'total' : t,          
+          'days' : days,
+          'hours' : hours,
+          'minutes' : minutes,
+          'seconds' : seconds
+        };
+  };
 
-		return {
-			'total': t,
-			'days': days,
-			'hours': hours,
-			'minutes': minutes,
-			'seconds': seconds
-		};
-	}; 
+  function countNumber(i) {
+    let a = String(i),
+        b = 0;
+    if(a.length == 1) {
+      a = 0 + '' + i;
+    } else {
+        a = i;
+      }
+    return a;
+  };
 
-	function setClock(id, endtime) {
-		let timer = document.getElementById(id),
-		days = document.querySelector('.days'),
-		hours = document.querySelector('.hours'),
-		minutes = document.querySelector('.minutes'),
-		seconds = document.querySelector('.seconds');
+  function setClock(id, endtime) {
+    
+    let timer = document.getElementsByClassName(id)[0],
+        days = timer.querySelector('.days'),
+        hours = timer.querySelector('.hours'),
+        minutes = timer.querySelector('.minutes'),
+        seconds = timer.querySelector('.seconds');
 
-		function updateClock() {
-			let t = getTime(endtime);
-			let arrTime = [t.days, t.hours, t.minutes, t.seconds];
-			for (let i = 0; i < arrTime.length; i++) {
-				if (arrTime[i] < 10) {
-					arrTime[i] = '0' + arrTime[i];
-				};
-			};
-			days.innerHTML = arrTime[0];
-			hours.innerHTML = arrTime[1];
-			minutes.innerHTML = arrTime[2];
-			seconds.innerHTML = arrTime[3];
-			if (t.total <= 0) {
-				clearInterval(timeInterval);
-				days.innerHTML = '00';
-				hours.innerHTML = '00';
-				minutes.innerHTML = '00';
-				seconds.innerHTML = '00';
-			};
-		};
-		let timeInterval = setInterval(updateClock, 1000);
-	};
+    function updateClock() {
+      let t = getTimeRemaining(endtime);
+      // console.log('проверка' + t);
+      // hours.innerHTML = '0' + t.hours,
+      days.innerHTML = countNumber(t.days),
+      hours.innerHTML = countNumber(t.hours),
+      minutes.innerHTML = countNumber(t.minutes),
+      seconds.innerHTML = countNumber(t.seconds);
 
-	setClock(eTimer, deadLine);
+      if (t.total <= 0) {
+        clearInterval(timeInterval);
+      }
+    };
+
+    let timeInterval = setInterval(updateClock, 1000);
+
+    updateClock();
+    // console.log('проверка тут');
+
+  };
+
+  setClock('eTimer', deadline);
+
+
+
+
+
+
+
 }
 
 module.exports = timer;

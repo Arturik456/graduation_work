@@ -23,44 +23,28 @@ textarea:focus {
 .no-padding {
   padding: 0 !important;
 }
-  /*Timer*/
-.timer {
-    padding: 10px;
-    background-color: #ffffff;
-    text-align: center;
-    border-radius: 10px;
+ /*Sale*/
+.sale {
+  padding: 8rem 0;
+  background: #ffffff url(../img/sale/bg.jpg) center center no-repeat;
 }
-.eTimer {
-    padding: 10px;
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 200;
-    font-style: normal;
-    font-size: 4.8rem;
-    color: #fff;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flex;
-    display: -o-flex;
-    display: flex;
+.sale_title {
+  margin-bottom: 8rem;
+  font-size: 4.8rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  text-transform: uppercase;
+  color: #0089cd;
 }
-.timer-block {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    line-height: 0.8;
+.sale_subtitle {
+  margin-bottom: 8rem;
+  font-size: 2.4rem;
+  line-height: 1.6;
 }
-.timer-number {
-    background-color: rgb(60, 60, 60);
-    border-radius: 15px;
-    letter-spacing: 5px;
-    padding-left: 5px;
+.scale_elem {
+    transform: scale(1.05);
 }
-.timer-label {
-    color: #000;
-    font-size: 14px;
-}
-
-
 .form {
   /*margin-top: 2rem;*/
   padding: 2rem 5rem;
@@ -645,9 +629,9 @@ textarea:focus {
   font-size: 2.4rem;
   line-height: 1.6;
 }
-.sale .eTimer {
+/*.sale .eTimer {
   text-align: center;
-}
+}*/
 /*Contacts*/
 .contacts {
   padding: 6rem 0;
@@ -805,6 +789,8 @@ textarea:focus {
   display: none;
   margin-bottom: 3rem;
   width: 30rem;
+  margin: 0 auto;
+  padding-bottom: 25px;
 }
 .popup_calc_content #type1 {
   display: inline-block;
@@ -1119,6 +1105,59 @@ textarea:focus {
     margin-right: 0;
     margin-bottom: 2rem;
   }
+}
+/*Sale*/
+.sale {
+  padding: 8rem 0;
+  background: #ffffff url(../img/sale/bg.jpg) center center no-repeat;
+}
+.sale_title {
+  margin-bottom: 8rem;
+  font-size: 4.8rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  text-transform: uppercase;
+  color: #0089cd;
+}
+.sale_subtitle {
+  margin-bottom: 8rem;
+  font-size: 2.4rem;
+  line-height: 1.6;
+}
+.sale .eTimer {
+  text-align: center;
+  background-color: #fff;
+  width: 350px;
+  border-radius: 1rem;
+  font-weight: 700;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.sale .eTimer .timer_title {
+  display: block;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.sale .eTimer .times_wrap {
+  display: flex;
+  justify-content: center;
+}
+.sale .eTimer .times_wrap .times {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 30px;
+}
+.sale .eTimer .times_wrap .number {
+  background-color: black;
+  color: white;  
+  border-radius: 1rem;
+  padding: 10px 10px;
+}
+.sale .eTimer .times_wrap .times .times_caption {
+  font-size: 12px;
 }
 @media (max-width: 767px) {
   .section_header h2 {

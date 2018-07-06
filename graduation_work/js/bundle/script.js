@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	tabs();
 	tabsDec();
 	img();
-	time('2018-07-7');
+	time();
 
 
 });
